@@ -392,7 +392,8 @@ int main()
     }
 } */
 
-
+//program that adds a number enter ed to all pair numbers of the array
+ /*
 #include <stdio.h>
 #define MAX_SIZE 100
 int main()
@@ -422,4 +423,364 @@ int main()
         }
         printf("%d ", arr[i]);
     }
-} 
+} */
+
+
+/**************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+***************************/
+/*
+#include <stdio.h>
+
+int main()
+{
+    int rows, cols,  i, j;
+    printf("please enter the number of rows: \n");
+    scanf("%d", &rows);
+    printf("please enter the number of colums: \n");
+    scanf("%d", &cols);
+    
+    int arr[rows][cols];
+    
+    printf("Enter the elements of the array:\n");
+
+    for(i=0; i<rows; i++){
+         printf("enter element at position [%d][%d]: ", i, j);
+            scanf("%d", &arr[i][j]);
+        for(j=0;j<cols;j++){
+            printf("enter element at position [%d][%d]: ", i, j);
+            scanf("%d", &arr[i][j]);
+        }
+    }
+    
+    printf("the 2d array is:\n");
+     for(i=0;i<rows;i++){
+        for(j=0;j<cols;j++){
+            printf("%d", arr[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}*/
+/*
+#include <stdio.h>
+
+#define STUDENTS 6
+#define SUBJECTS 5
+
+int main() {
+    int scores[STUDENTS][SUBJECTS];
+
+    printf("Enter the scores of the students:\n");
+
+    // Read scores from the user and store them in the array
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Enter scores for student %d:\n", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("Subject %d: ", j + 1);
+            scanf("%d", &scores[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nThe scores of the students are:\n");
+
+    // Display the scores of the students
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Scores for student %d:\n", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("Subject %d: %d\n", j + 1, scores[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+#include <stdio.h>
+
+#define STUDENTS 5
+#define SUBJECTS 5
+
+int main() {
+    int scores[STUDENTS][SUBJECTS];
+
+    // Input scores for each student and subject
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Enter scores for student %d:\n", i + 1);
+
+        printf("Mathematics: ");
+        scanf("%d", &scores[i][0]);
+
+        printf("English: ");
+        scanf("%d", &scores[i][1]);
+
+        printf("Geography: ");
+        scanf("%d", &scores[i][2]);
+
+        printf("Physics: ");
+        scanf("%d", &scores[i][3]);
+
+        printf("History: ");
+        scanf("%d", &scores[i][4]);
+
+        printf("\n");
+    }
+
+    printf("Result:\n");
+
+    // Output the result as a 2D array
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Student %d: ", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("%d ", scores[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+#include <stdio.h>
+
+#define STUDENTS 5
+#define SUBJECTS 5
+
+int main() {
+    int scores[STUDENTS][SUBJECTS];
+
+    // Input scores for each student and subject
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Enter scores for student %d:\n", i + 1);
+
+        printf("Mathematics: ");
+        scanf("%d", &scores[i][0]);
+
+        printf("English: ");
+        scanf("%d", &scores[i][1]);
+
+        printf("Geography: ");
+        scanf("%d", &scores[i][2]);
+
+        printf("Physics: ");
+        scanf("%d", &scores[i][3]);
+
+        printf("History: ");
+        scanf("%d", &scores[i][4]);
+
+        printf("\n");
+    }
+
+    printf("Result:\n");
+
+    // Output the result as a 2D array
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Student %d: ", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("%d ", scores[i][j]);
+        }
+
+        // Calculate and print the average score for each student
+        int sum = 0;
+        for (int j = 0; j < SUBJECTS; j++) {
+            sum += scores[i][j];
+        }
+        float average = (float)sum / SUBJECTS;
+        printf("Average: %.2f", average);
+
+        printf("\n");
+    }
+
+    return 0;
+}
+
+#include <stdio.h>
+
+#define STUDENTS 5
+#define SUBJECTS 5
+
+int main() {
+    int scores[STUDENTS][SUBJECTS];
+    int subjectTotal[SUBJECTS] = {0};  // Array to store the total scores of each subject
+
+    // Input scores for each student and subject
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Enter scores for student %d:\n", i + 1);
+
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("Subject %d: ", j + 1);
+            scanf("%d", &scores[i][j]);
+            subjectTotal[j] += scores[i][j];  // Update the total score for the current subject
+        }
+
+        printf("\n");
+    }
+
+    printf("Result:\n");
+
+    // Output the result as a 2D array and calculate the average score for each student
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Student %d: ", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("%d ", scores[i][j]);
+        }
+
+        int sum = 0;
+        for (int j = 0; j < SUBJECTS; j++) {
+            sum += scores[i][j];
+        }
+        float average = (float)sum / SUBJECTS;
+        printf("Average: %.2f", average);
+
+        printf("\n");
+    }
+
+    printf("\n");
+
+    // Calculate and print the average score for each subject
+    for (int j = 0; j < SUBJECTS; j++) {
+        float subjectAverage = (float)subjectTotal[j] / STUDENTS;
+        printf("Average score for Subject %d: %.2f\n", j + 1, subjectAverage);
+    }
+
+    return 0;
+}
+
+#include <stdio.h>
+
+#define STUDENTS 5
+#define SUBJECTS 5
+
+int main() {
+    int scores[STUDENTS][SUBJECTS];
+    int subjectTotal[SUBJECTS] = {0};  // Array to store the total scores of each subject
+    int highestScore[SUBJECTS] = {0};  // Array to store the highest score of each subject
+    int highestScoreStudent[SUBJECTS] = {0};  // Array to store the student number with the highest score for each subject
+
+    // Input scores for each student and subject
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Enter scores for student %d:\n", i + 1);
+
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("Subject %d: ", j + 1);
+            scanf("%d", &scores[i][j]);
+            subjectTotal[j] += scores[i][j];  // Update the total score for the current subject
+
+            if (scores[i][j] > highestScore[j]) {
+                highestScore[j] = scores[i][j];  // Update the highest score for the current subject
+                highestScoreStudent[j] = i + 1;  // Update the student number with the highest score for the current subject
+            }
+        }
+
+        printf("\n");
+    }
+
+    printf("Result:\n");
+
+    // Output the result as a 2D array and calculate the average score for each student
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Student %d: ", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("%d ", scores[i][j]);
+        }
+
+        int sum = 0;
+        for (int j = 0; j < SUBJECTS; j++) {
+            sum += scores[i][j];
+        }
+        float average = (float)sum / SUBJECTS;
+        printf("Average: %.2f", average);
+
+        printf("\n");
+    }
+
+    printf("\n");
+
+    // Calculate and print the average score for each subject
+    for (int j = 0; j < SUBJECTS; j++) {
+        float subjectAverage = (float)subjectTotal[j] / STUDENTS;
+        printf("Average score for Subject %d: %.2f\n", j + 1, subjectAverage);
+    }
+
+    printf("\n");
+
+    // Print the highest score of each subject with the student who achieved that score
+    for (int j = 0; j < SUBJECTS; j++) {
+        printf("Highest score for Subject %d: %d (Student %d)\n", j + 1, highestScore[j], highestScoreStudent[j]);
+    }
+
+    return 0;
+}*/
+
+
+#include <stdio.h>
+
+#define STUDENTS 5
+#define SUBJECTS 5
+
+int main() {
+    int scores[STUDENTS][SUBJECTS];
+    int highestScore[SUBJECTS] = {0};  // Array to store the highest score of each subject
+    int studentWithHighestScore[SUBJECTS] = {0};  // Array to store the student number with the highest score for each subject
+    float studentAverage[STUDENTS] = {0.0};  // Array to store the average score for each student
+    float subjectAverage[SUBJECTS] = {0.0};  // Array to store the average score for each subject
+
+    // Input scores for each student and subject
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Enter scores for student %d:\n", i + 1);
+
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("Subject %d: ", j + 1);
+            scanf("%d", &scores[i][j]);
+
+            // Check if current score is higher than the previous highest score for the subject
+            if (scores[i][j] > highestScore[j]) {
+                highestScore[j] = scores[i][j];
+                studentWithHighestScore[j] = i + 1;
+            }
+
+            // Update the average score for the current student
+            studentAverage[i] += scores[i][j];
+
+            // Update the average score for the current subject
+            subjectAverage[j] += scores[i][j];
+        }
+
+        // Calculate the average score for the current student
+        studentAverage[i] /= SUBJECTS;
+
+        printf("\n");
+    }
+
+    printf("Result:\n");
+
+    // Output the result as a 2D array
+    for (int i = 0; i < STUDENTS; i++) {
+        printf("Student %d: ", i + 1);
+        for (int j = 0; j < SUBJECTS; j++) {
+            printf("%d ", scores[i][j]);
+        }
+        printf("Average: %.2f\n", studentAverage[i]);
+    }
+
+    printf("\n");
+
+    // Print the highest score of each subject with the student who achieved that score
+    for (int j = 0; j < SUBJECTS; j++) {
+        printf("Highest score for Subject %d: %d (Student %d)\n", j + 1, highestScore[j], studentWithHighestScore[j]);
+    }
+
+    printf("\n");
+
+    // Calculate and print the average score for each subject
+    for (int j = 0; j < SUBJECTS; j++) {
+        subjectAverage[j] /= STUDENTS;
+        printf("Average score for Subject %d: %.2f\n", j + 1, subjectAverage[j]);
+    }
+
+    return 0;
+}
