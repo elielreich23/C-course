@@ -47,7 +47,7 @@ int main (){
     int input, lenght, width, height, radius, side, base;
     float area;
 
-    printf("_____input a digite to calculta the area of the gigure______\n");
+    printf("_____input a digite to calculate the area of the figure______\n");
     printf("Input 1 for to calculate for a rectangle\n");
     printf("Input 2 for to calculate for a triangle\n");
     printf("Input 3 for to calculate for a square\n");
@@ -145,7 +145,7 @@ int main (){
     d = sqrt(pow(x2-x1, 2) + pow(y2-y1, 2));
     printf("\nthe distance between the two points is %.2f ", d);
 }*/
-/*
+/*calculate the third side of a triangle
 #include <stdio.h>
 #include <math.h>
 int main()
