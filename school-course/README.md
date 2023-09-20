@@ -19,3 +19,5 @@ Importante! A função deve ser do tipo void.
 6. Escreva um programa que declare um vetor de inteiros e um ponteiro para inteiros. Associe o ponteiro ao vetor e some mais um (+1) a cada posição do vetor, usando o ponteiro.
 
 7. Escreva uma função que recebe um ponteiro de inteiros (V),  e os endereços de duas variáveis inteiras, min e max, e armazene nessas variáveis o valor mínimo e máximo do vetor. Escreva também uma função main que use essa função...
+
+pilha.c exercicio sobre pilha
