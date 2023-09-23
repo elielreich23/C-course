@@ -160,7 +160,7 @@ int pop(Stack *stack) {
     return stack->data[stack->top--];
 }
 
-// Função para imprimir todos os elementos da pilha
+// Função para imprimir pilha
 void printStack(Stack *stack) {
     if (isEmpty(stack)) {
         printf("A pilha está vazia.\n");
