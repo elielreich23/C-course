@@ -32,6 +32,43 @@ int main() {
     return 0;
 }*/
 
+//exo 2
+#include <stdio.h>
+
+int calcularFatorial(int num) {
+    if (num <= 1) {
+        return 1;
+    }
+    return num * calcularFatorial(num - 1);
+}
+
+int main() {
+    int n1, n2;
+
+    // Solicita ao usuário n1 e n2 até que n2 seja maior que n1
+    do {
+        printf("Digite um valor inteiro positivo para n1: ");
+        scanf("%d", &n1);
+
+        printf("Digite um valor inteiro positivo maior que n1 para n2: ");
+        scanf("%d", &n2);
+
+        if (n2 <= n1) {
+            printf("n2 deve ser maior que n1. Tente novamente.\n");
+        }
+    } while (n2 <= n1);
+
+    printf("Fatoriais no intervalo de %d a %d:\n", n1, n2);
+
+    for (int i = n1; i <= n2; i++) {
+        int fatorial = calcularFatorial(i);
+        printf("%d! = %d\n", i, fatorial);
+    }
+
+    return 0;
+}
+
+
 // exo 3
 /**#include <stdio.h>
 int main(){
