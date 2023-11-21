@@ -41,7 +41,7 @@ void leitura(struct evento *x, int contador){
             ehDataValida(x->data.dia, x->data.mes)) {
             entradaValida = 1;
         } else {
-            printf("Data inválida. Tente novamente.\n");
+            printf("Data invÃ¡lida. Tente novamente.\n");
             while (getchar() != '\n');
         }
     } while (!entradaValida);
@@ -49,12 +49,12 @@ void leitura(struct evento *x, int contador){
     entradaValida = 0;
 
    do {
-    printf("Digite o horário de início (hora e minuto):\n");
+    printf("Digite o horÃ¡rio de inÃ­cio (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora1, &x->horario.min1) == 2 &&
         ehHorarioValido(x->horario.hora1, x->horario.min1)) {
         entradaValida = 1;
     } else {
-        printf("Horário inválido. Tente novamente.\n");
+        printf("HorÃ¡rio invÃ¡lido. Tente novamente.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
@@ -62,19 +62,19 @@ void leitura(struct evento *x, int contador){
 entradaValida = 0;
 
 do {
-    printf("Digite o horário de término (hora e minuto):\n");
+    printf("Digite o horÃ¡rio de tÃ©rmino (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora2, &x->horario.min2) == 2 &&
         ehHorarioValido(x->horario.hora2, x->horario.min2) &&
         (x->horario.hora2 > x->horario.hora1 || (x->horario.hora2 == x->horario.hora1 && x->horario.min2 > x->horario.min1))) {
         entradaValida = 1;
     } else {
-        printf("Horário inválido. Tente novamente. Certifique-se de que o horário de término é maior que o horário de início.\n");
+        printf("HorÃ¡rio invÃ¡lido. Tente novamente. Certifique-se de que o horÃ¡rio de tÃ©rmino Ã© maior que o horÃ¡rio de inÃ­cio.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
 
 
-    printf("Digite a descrição:\n");
+    printf("Digite a descriÃ§Ã£o:\n");
     scanf(" %[^\n]", x->descricao);
 }
 
