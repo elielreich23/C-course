@@ -116,12 +116,8 @@ void mostrarAmbientes(struct ambiente *ambientes, int numAmbientes) {
 
 void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes) {
     if (*numAmbientes < MAX_AMBIENTES) {
-        // Check if there is space for a new ambiente
         printf("Digite o local do ambiente/recursos:\n");
         scanf(" %[^\n]", ambientes[*numAmbientes].local);
-
-        // You can add more details about the ambiente here if needed
-        // For example, you can prompt the user for additional information
 
         printf("Ambiente/Recursos adicionado com sucesso!\n");
         (*numAmbientes)++;
