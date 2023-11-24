@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<locale.h>
 #define RED   "\x1B[31m"
 #define RESET "\x1B[0m"
 #define MAX_AMBIENTES 10
@@ -41,7 +42,7 @@ void leitura(struct evento *x, int contador){
             ehDataValida(x->data.dia, x->data.mes)) {
             entradaValida = 1;
         } else {
-            printf("Data invÃ¡lida. Tente novamente.\n");
+            printf("Data inválida. Tente novamente.\n");
             while (getchar() != '\n');
         }
     } while (!entradaValida);
@@ -49,12 +50,13 @@ void leitura(struct evento *x, int contador){
     entradaValida = 0;
 
    do {
-    printf("Digite o horÃ¡rio de inÃ­cio (hora e minuto):\n");
+
+    printf("Digite o horário de início (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora1, &x->horario.min1) == 2 &&
         ehHorarioValido(x->horario.hora1, x->horario.min1)) {
         entradaValida = 1;
     } else {
-        printf("HorÃ¡rio invÃ¡lido. Tente novamente.\n");
+        printf("Horário inválido. Tente novamente.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
@@ -62,19 +64,19 @@ void leitura(struct evento *x, int contador){
 entradaValida = 0;
 
 do {
-    printf("Digite o horÃ¡rio de tÃ©rmino (hora e minuto):\n");
+    printf("Digite o horário de término (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora2, &x->horario.min2) == 2 &&
         ehHorarioValido(x->horario.hora2, x->horario.min2) &&
         (x->horario.hora2 > x->horario.hora1 || (x->horario.hora2 == x->horario.hora1 && x->horario.min2 > x->horario.min1))) {
         entradaValida = 1;
     } else {
-        printf("HorÃ¡rio invÃ¡lido. Tente novamente. Certifique-se de que o horÃ¡rio de tÃ©rmino Ã© maior que o horÃ¡rio de inÃ­cio.\n");
+        printf("Horário inválido. Tente novamente. Certifique-se de que o horário de término é maior que o horário de início.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
 
 
-    printf("Digite a descriÃ§Ã£o:\n");
+    printf("Digite a descrição:\n");
     scanf(" %[^\n]", x->descricao);
 }
 
@@ -164,6 +166,9 @@ int remover(struct evento *x, int contador){
 
 int main()
 {
+
+    setlocale(LC_ALL, "Portuguese_Brazil");
+
 	struct Ambiente *y = NULL;
 	struct evento *x = NULL;
     int opcao, usuario, cont = 0;
@@ -172,8 +177,10 @@ int main()
     int opcaoCadastroEvento = 0;
 
 
+
 	x = malloc(sizeof(struct evento) * cont);
     system("CLS");
+
 	printf(RED "\nMENU USUARIO\n1)Adm\n2)Professor\n3)Aluno\nDigite a opcao de usuario: \n" RESET);
 	scanf("%d", &usuario);
 

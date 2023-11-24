@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 #define RED   "\x1B[31m"
 #define RESET "\x1B[0m"
 #define MAX_AMBIENTES 10
@@ -168,6 +169,9 @@ int remover(struct evento *x, int contador){
 
 int main()
 {
+
+    setlocale(LC_ALL, "Portuguese_Brazil");
+
 	struct Ambiente *y = NULL;
 	struct evento *x = NULL;
     int opcao, usuario, cont = 0;
