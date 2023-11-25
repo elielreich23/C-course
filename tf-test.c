@@ -27,7 +27,7 @@ struct ambiente{
     struct evento x;
     char local[20];
     struct evento eventos[MAX_EVENTOS_AMBIENTE];
-    int numEventos;  // Número atual de eventos associados ao ambiente
+    int numEventos;  // NÃºmero atual de eventos associados ao ambiente
 
 };
 
@@ -50,7 +50,7 @@ void leitura(struct evento *x, int contador){
             ehDataValida(x->data.dia, x->data.mes)) {
             entradaValida = 1;
         } else {
-            printf("Data inválida. Tente novamente.\n");
+            printf("Data invÃ¡lida. Tente novamente.\n");
             while (getchar() != '\n');
         }
     } while (!entradaValida);
@@ -58,12 +58,12 @@ void leitura(struct evento *x, int contador){
     entradaValida = 0;
 
    do {
-    printf("Digite o horário de início (hora e minuto):\n");
+    printf("Digite o horÃ¡rio de inÃ­cio (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora1, &x->horario.min1) == 2 &&
         ehHorarioValido(x->horario.hora1, x->horario.min1)) {
         entradaValida = 1;
     } else {
-        printf("Horário inválido. Tente novamente.\n");
+        printf("HorÃ¡rio invÃ¡lido. Tente novamente.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
@@ -71,19 +71,19 @@ void leitura(struct evento *x, int contador){
 entradaValida = 0;
 
 do {
-    printf("Digite o horário de término (hora e minuto):\n");
+    printf("Digite o horÃ¡rio de tÃ©rmino (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora2, &x->horario.min2) == 2 &&
         ehHorarioValido(x->horario.hora2, x->horario.min2) &&
         (x->horario.hora2 > x->horario.hora1 || (x->horario.hora2 == x->horario.hora1 && x->horario.min2 > x->horario.min1))) {
         entradaValida = 1;
     } else {
-        printf("Horário inválido. Tente novamente. Certifique-se de que o horário de término é maior que o horário de início.\n");
+        printf("HorÃ¡rio invÃ¡lido. Tente novamente. Certifique-se de que o horÃ¡rio de tÃ©rmino Ã© maior que o horÃ¡rio de inÃ­cio.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
 
 
-    printf("Digite a descrição:\n");
+    printf("Digite a descriÃ§Ã£o:\n");
     scanf(" %[^\n]", x->descricao);
     printf("Digite a sala do evento:\n");
     scanf(" %[^\n]", x->salaEvento);
@@ -150,22 +150,22 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
 
             // Associar os eventos escolhidos ao ambiente
             for (int i = 0; i < numEventosAssociar; i++) {
-                printf("Digite o número do evento %d: ", i + 1);
+                printf("Digite o nÃºmero do evento %d: ", i + 1);
                 int numEvento;
                 scanf("%d", &numEvento);
 
-                // Validar o número do evento escolhido
+                // Validar o nÃºmero do evento escolhido
                 if (numEvento >= 1 && numEvento <= numEventos) {
                     ambientes[*numAmbientes].eventos[i] = eventos[numEvento - 1];
                 } else {
-                    printf("Número de evento inválido! O ambiente foi adicionado, mas alguns eventos podem não ter sido associados.\n");
+                    printf("NÃºmero de evento invÃ¡lido! O ambiente foi adicionado, mas alguns eventos podem nÃ£o ter sido associados.\n");
                 }
             }
 
             printf("Ambiente/Recursos adicionado e associado ao evento com sucesso!\n");
             (*numAmbientes)++;
         } else {
-            printf("Número de eventos inválido! O ambiente foi adicionado, mas não associado a nenhum evento.\n");
+            printf("NÃºmero de eventos invÃ¡lido! O ambiente foi adicionado, mas nÃ£o associado a nenhum evento.\n");
             (*numAmbientes)++;
         }
     } else {
@@ -190,7 +190,7 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
         }
 
         // Get user input for the chosen event
-        printf("Digite o número do evento: ");
+        printf("Digite o nÃºmero do evento: ");
         scanf("%d", &numEvento);
 
         // Validate the chosen event number
@@ -201,7 +201,7 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
             printf("Ambiente/Recursos adicionado e associado ao evento com sucesso!\n");
             (*numAmbientes)++;
         } else {
-            printf("Número de evento inválido! O ambiente foi adicionado, mas não associado a nenhum evento.\n");
+            printf("NÃºmero de evento invÃ¡lido! O ambiente foi adicionado, mas nÃ£o associado a nenhum evento.\n");
             (*numAmbientes)++;
         }
     } else {
@@ -353,7 +353,7 @@ int main()
         }
 
         if (!encontrado) {
-            printf("Ambiente ou recursos não encontrado!\n");
+            printf("Ambiente ou recursos nÃ£o encontrado!\n");
         }
     }
     system("PAUSE");
