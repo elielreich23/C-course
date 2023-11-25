@@ -5,6 +5,7 @@
 #define RED   "\x1B[31m"
 #define RESET "\x1B[0m"
 #define MAX_AMBIENTES 10
+#define MAX_EVENTOS_AMBIENTE 10
 
 struct Data{
     int dia, mes;
@@ -25,6 +26,9 @@ struct evento {
 struct ambiente{
     struct evento x;
     char local[20];
+    struct evento eventos[MAX_EVENTOS_AMBIENTE];
+    int numEventos;  // Número atual de eventos associados ao ambiente
+
 };
 
 int ehDataValida(int dia, int mes) {
@@ -46,7 +50,7 @@ void leitura(struct evento *x, int contador){
             ehDataValida(x->data.dia, x->data.mes)) {
             entradaValida = 1;
         } else {
-            printf("Data invÃ¡lida. Tente novamente.\n");
+            printf("Data inválida. Tente novamente.\n");
             while (getchar() != '\n');
         }
     } while (!entradaValida);
@@ -54,12 +58,12 @@ void leitura(struct evento *x, int contador){
     entradaValida = 0;
 
    do {
-    printf("Digite o horÃ¡rio de inÃ­cio (hora e minuto):\n");
+    printf("Digite o horário de início (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora1, &x->horario.min1) == 2 &&
         ehHorarioValido(x->horario.hora1, x->horario.min1)) {
         entradaValida = 1;
     } else {
-        printf("HorÃ¡rio invÃ¡lido. Tente novamente.\n");
+        printf("Horário inválido. Tente novamente.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
@@ -67,19 +71,19 @@ void leitura(struct evento *x, int contador){
 entradaValida = 0;
 
 do {
-    printf("Digite o horÃ¡rio de tÃ©rmino (hora e minuto):\n");
+    printf("Digite o horário de término (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora2, &x->horario.min2) == 2 &&
         ehHorarioValido(x->horario.hora2, x->horario.min2) &&
         (x->horario.hora2 > x->horario.hora1 || (x->horario.hora2 == x->horario.hora1 && x->horario.min2 > x->horario.min1))) {
         entradaValida = 1;
     } else {
-        printf("HorÃ¡rio invÃ¡lido. Tente novamente. Certifique-se de que o horÃ¡rio de tÃ©rmino Ã© maior que o horÃ¡rio de inÃ­cio.\n");
+        printf("Horário inválido. Tente novamente. Certifique-se de que o horário de término é maior que o horário de início.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
 
 
-    printf("Digite a descriÃ§Ã£o:\n");
+    printf("Digite a descrição:\n");
     scanf(" %[^\n]", x->descricao);
     printf("Digite a sala do evento:\n");
     scanf(" %[^\n]", x->salaEvento);
@@ -124,7 +128,52 @@ void mostrarAmbientes(struct ambiente *ambientes, int numAmbientes) {
         }
     }
 }
+
 void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct evento *eventos, int numEventos) {
+    if (*numAmbientes < MAX_AMBIENTES) {
+        // Check if there is space for a new ambiente
+        printf("Digite o local do ambiente/recursos:\n");
+        scanf(" %[^\n]", ambientes[*numAmbientes].local);
+
+        // Associar eventos ao ambiente
+        int numEventosAssociar;
+        printf("Quantos eventos deseja associar a este ambiente? (max %d): ", MAX_EVENTOS_AMBIENTE);
+        scanf("%d", &numEventosAssociar);
+
+        if (numEventosAssociar > 0 && numEventosAssociar <= MAX_EVENTOS_AMBIENTE) {
+            ambientes[*numAmbientes].numEventos = numEventosAssociar;
+
+            printf("Escolha os eventos ao qual deseja associar ambientes e recursos:\n");
+            for (int i = 0; i < numEventos; i++) {
+                printf("Evento %d - Data: %d/%d\n", i + 1, eventos[i].data.dia, eventos[i].data.mes);
+            }
+
+            // Associar os eventos escolhidos ao ambiente
+            for (int i = 0; i < numEventosAssociar; i++) {
+                printf("Digite o número do evento %d: ", i + 1);
+                int numEvento;
+                scanf("%d", &numEvento);
+
+                // Validar o número do evento escolhido
+                if (numEvento >= 1 && numEvento <= numEventos) {
+                    ambientes[*numAmbientes].eventos[i] = eventos[numEvento - 1];
+                } else {
+                    printf("Número de evento inválido! O ambiente foi adicionado, mas alguns eventos podem não ter sido associados.\n");
+                }
+            }
+
+            printf("Ambiente/Recursos adicionado e associado ao evento com sucesso!\n");
+            (*numAmbientes)++;
+        } else {
+            printf("Número de eventos inválido! O ambiente foi adicionado, mas não associado a nenhum evento.\n");
+            (*numAmbientes)++;
+        }
+    } else {
+        printf("Limite de ambientes atingido!\n");
+    }
+}
+
+/**void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct evento *eventos, int numEventos) {
     if (*numAmbientes < MAX_AMBIENTES) {
         // Check if there is space for a new ambiente
         printf("Digite o local do ambiente/recursos:\n");
@@ -141,7 +190,7 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
         }
 
         // Get user input for the chosen event
-        printf("Digite o nÃºmero do evento: ");
+        printf("Digite o número do evento: ");
         scanf("%d", &numEvento);
 
         // Validate the chosen event number
@@ -152,14 +201,14 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
             printf("Ambiente/Recursos adicionado e associado ao evento com sucesso!\n");
             (*numAmbientes)++;
         } else {
-            printf("NÃºmero de evento invÃ¡lido! O ambiente foi adicionado, mas nÃ£o associado a nenhum evento.\n");
+            printf("Número de evento inválido! O ambiente foi adicionado, mas não associado a nenhum evento.\n");
             (*numAmbientes)++;
         }
     } else {
         printf("Limite de ambientes atingido!\n");
     }
 }
-
+**/
 
 /**
 void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes) {
@@ -214,6 +263,18 @@ int remover(struct evento *x, int contador){
 }
 
 
+int comparaEventos(const struct evento *evento1, const struct evento *evento2) {
+    // Implement your comparison logic here
+    // Return 0 if the events are considered equal, and a non-zero value otherwise
+    return (evento1->data.dia == evento2->data.dia &&
+            evento1->data.mes == evento2->data.mes &&
+            evento1->horario.hora1 == evento2->horario.hora1 &&
+            evento1->horario.min1 == evento2->horario.min1 &&
+            evento1->horario.hora2 == evento2->horario.hora2 &&
+            evento1->horario.min2 == evento2->horario.min2 &&
+            strcmp(evento1->descricao, evento2->descricao) == 0);
+}
+
 int main()
 {
     setlocale(LC_ALL, "Portuguese_Brazil");
@@ -262,9 +323,41 @@ int main()
                 mostrarAmbientes(ambientes, numAmbientes);
             }
             system("PAUSE");
-        }else if(opcao == 4){
+        }else if (opcao == 4) {
+    if (numAmbientes == 0) {
+        printf("Nao ha ambientes ou recursos registrados. Por favor, utilize a opcao 1 para adicionar ambientes e recursos.\n");
+    } else {
+        char localBusca[20];
+        int encontrado = 0;
 
-        }else if(opcao == 5){
+        printf("Digite o local do ambiente/recursos que deseja consultar:\n");
+        scanf(" %[^\n]", localBusca);
+
+        for (int i = 0; i < numAmbientes; i++) {
+            if (strcmp(localBusca, ambientes[i].local) == 0) {
+                encontrado = 1;
+                printf("Detalhes do ambiente/recursos:\n");
+                printf("Local: %s\n", ambientes[i].local);
+                printf("Eventos associados:\n", ambientes[i].x.nomeEvento);
+
+                // Loop through all events and find those associated with the current ambiente
+                for (int j = 0; j < cont; j++) {
+                    if (comparaEventos(&ambientes[i].x, &x[j]) == 0) {
+                        mostrar_um(x[j]);
+                        printf("\n");
+                    }
+                }
+
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            printf("Ambiente ou recursos não encontrado!\n");
+        }
+    }
+    system("PAUSE");
+    }else if(opcao == 5){
 
             if(cont == 0){
                 printf("Nao ha eventos!\n");
