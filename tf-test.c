@@ -119,7 +119,7 @@ void mostrarAmbientes(struct ambiente *ambientes, int numAmbientes) {
             printf("Ambiente %d:\n", i + 1);
             printf("Local: %s\n", ambientes[i].local);
 
-            // Display the associated event details
+            
             printf("Evento associado: %s\n", ambientes[i].x.nomeEvento);
             mostrar_um(ambientes[i].x);
            // printf("Nome do Evento: %s\n");
@@ -131,11 +131,10 @@ void mostrarAmbientes(struct ambiente *ambientes, int numAmbientes) {
 
 void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct evento *eventos, int numEventos) {
     if (*numAmbientes < MAX_AMBIENTES) {
-        // Check if there is space for a new ambiente
+        
         printf("Digite o local do ambiente/recursos:\n");
         scanf(" %[^\n]", ambientes[*numAmbientes].local);
 
-        // Associar eventos ao ambiente
         int numEventosAssociar;
         printf("Quantos eventos deseja associar a este ambiente? (max %d): ", MAX_EVENTOS_AMBIENTE);
         scanf("%d", &numEventosAssociar);
@@ -148,13 +147,13 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
                 printf("Evento %d - Data: %d/%d\n", i + 1, eventos[i].data.dia, eventos[i].data.mes);
             }
 
-            // Associar os eventos escolhidos ao ambiente
+            
             for (int i = 0; i < numEventosAssociar; i++) {
                 printf("Digite o número do evento %d: ", i + 1);
                 int numEvento;
                 scanf("%d", &numEvento);
 
-                // Validar o número do evento escolhido
+                
                 if (numEvento >= 1 && numEvento <= numEventos) {
                     ambientes[*numAmbientes].eventos[i] = eventos[numEvento - 1];
                 } else {
@@ -264,8 +263,7 @@ int remover(struct evento *x, int contador){
 
 
 int comparaEventos(const struct evento *evento1, const struct evento *evento2) {
-    // Implement your comparison logic here
-    // Return 0 if the events are considered equal, and a non-zero value otherwise
+    
     return (evento1->data.dia == evento2->data.dia &&
             evento1->data.mes == evento2->data.mes &&
             evento1->horario.hora1 == evento2->horario.hora1 &&
@@ -340,7 +338,6 @@ int main()
                 printf("Local: %s\n", ambientes[i].local);
                 printf("Eventos associados:\n", ambientes[i].x.nomeEvento);
 
-                // Loop through all events and find those associated with the current ambiente
                 for (int j = 0; j < cont; j++) {
                     if (comparaEventos(&ambientes[i].x, &x[j]) == 0) {
                         mostrar_um(x[j]);
