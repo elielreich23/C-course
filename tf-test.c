@@ -84,7 +84,7 @@ do {
     scanf(" %[^\n]", x->salaEvento);
 }
 
-
+//life is goos 
 
 void mostrar_um(struct evento x){
     printf(RED "");
