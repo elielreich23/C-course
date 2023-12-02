@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 #define RED   "\x1B[31m"
 #define RESET "\x1B[0m"
 #define MAX_AMBIENTES 10
@@ -16,8 +17,8 @@ struct Horario{
 struct evento {
     struct Data data;
     struct Horario horario;
-    char nomeEvento[50]; 
-    char salaEvento[20]; 
+    char nomeEvento[50];
+    char salaEvento[20];
     char descricao[20];
 };
 
@@ -84,7 +85,7 @@ do {
     scanf(" %[^\n]", x->salaEvento);
 }
 
-//life is goos 
+//life is goos
 
 void mostrar_um(struct evento x){
     printf(RED "");
@@ -113,12 +114,12 @@ void mostrarAmbientes(struct ambiente *ambientes, int numAmbientes) {
         for (int i = 0; i < numAmbientes; i++) {
             printf("Ambiente %d:\n", i + 1);
             printf("Local: %s\n", ambientes[i].local);
-            
+
             // Display the associated event details
             printf("Evento associado: %s\n", ambientes[i].x.nomeEvento);
             mostrar_um(ambientes[i].x);
            // printf("Nome do Evento: %s\n");
-            
+
             printf("\n");
         }
     }
@@ -215,6 +216,7 @@ int remover(struct evento *x, int contador){
 
 int main()
 {
+    setlocale(LC_ALL,"Portuguese");
 	struct Ambiente *y = NULL;
 	struct evento *x = NULL;
     int opcao, usuario, cont = 0;
@@ -259,9 +261,36 @@ int main()
                 mostrarAmbientes(ambientes, numAmbientes);
             }
             system("PAUSE");
-        }else if(opcao == 4){
+        } else if (opcao == 4) {
+    if (numAmbientes == 0) {
+        printf("Nao ha ambientes ou recursos registrados. Por favor, utilize a opcao 1 para adicionar ambientes e recursos.\n");
+    } else {
+        // pedir noime do ambiente
+        char nomeAmbiente[20];
+        printf("Digite o nome do ambiente/recursos que deseja consultar:\n");
+        scanf(" %[^\n]", nomeAmbiente);
 
-		}else if(opcao == 5){
+        // monstrar detahes
+        int encontrados = 0;
+        for (int i = 0; i < numAmbientes; i++) {
+            if (strcmp(nomeAmbiente, ambientes[i].local) == 0) {
+                encontrados++;
+                printf("Detalhes do Ambiente/Recursos:\n");
+                printf("Local: %s\n", ambientes[i].local);
+                printf("Evento associado:\n");
+                mostrar_um(ambientes[i].x);
+                printf("\n");
+            }
+        }
+
+        if (encontrados == 0) {
+            printf("Ambiente/Recursos nao encontrado!\n");
+        }
+    }
+    system("PAUSE");
+}
+
+else if(opcao == 5){
 
 			if(cont == 0){
                 printf("Nao ha eventos!\n");
