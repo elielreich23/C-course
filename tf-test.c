@@ -130,10 +130,6 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
         printf("Digite o local do ambiente/recursos:\n");
         scanf(" %[^\n]", ambientes[*numAmbientes].local);
 
-        // You can add more details about the ambiente here if needed
-        // For example, you can prompt the user for additional information
-
-        // Prompt the user to associate an event with the ambiente
         int numEvento;
         printf("Escolha o evento ao qual deseja associar ambientes e recursos:\n");
         for (int i = 0; i < numEventos; i++) {
@@ -236,6 +232,7 @@ int main()
     	do{system("CLS");
         printf(RED "\nMENU ADM\n1)Adicionar ambientes e recursos\n2)Cadastro de um novo evento\n3)Mostrar todos os ambientes/recursos\n4)Mostrar ambientes e recursos especificos\n5)Mostrar eventos(data especifica)\n6)Mostrar eventos(por descricao)\n7)Remover evento(por data e hora de inicio)\n8)Sair\nDigite uma opcao:\n" RESET);
         scanf("%d", &opcao);
+        
 
         if (opcao == 1) {
             if (opcaoCadastroEvento) {
@@ -277,8 +274,9 @@ int main()
                 encontrados++;
                 printf("Detalhes do Ambiente/Recursos:\n");
                 printf("Local: %s\n", ambientes[i].local);
-                printf("Evento associado:\n");
+                printf("Evento associado: %s\n", ambientes[i].x.nomeEvento);
                 mostrar_um(ambientes[i].x);
+
                 printf("\n");
             }
         }
