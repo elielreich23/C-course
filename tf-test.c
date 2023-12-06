@@ -46,7 +46,7 @@ void leitura(struct evento *x, int contador){
             ehDataValida(x->data.dia, x->data.mes)) {
             entradaValida = 1;
         } else {
-            printf("Data invÃ¡lida. Tente novamente.\n");
+            printf("Data inválida. Tente novamente.\n");
             while (getchar() != '\n');
         }
     } while (!entradaValida);
@@ -54,12 +54,12 @@ void leitura(struct evento *x, int contador){
     entradaValida = 0;
 
    do {
-    printf("Digite o horÃ¡rio de inÃ­cio (hora e minuto):\n");
+    printf("Digite o horário de início (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora1, &x->horario.min1) == 2 &&
         ehHorarioValido(x->horario.hora1, x->horario.min1)) {
         entradaValida = 1;
     } else {
-        printf("HorÃ¡rio invÃ¡lido. Tente novamente.\n");
+        printf("Horário inválido. Tente novamente.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
@@ -67,19 +67,19 @@ void leitura(struct evento *x, int contador){
 entradaValida = 0;
 
 do {
-    printf("Digite o horÃ¡rio de tÃ©rmino (hora e minuto):\n");
+    printf("Digite o horário de término (hora e minuto):\n");
     if (scanf("%d%d", &x->horario.hora2, &x->horario.min2) == 2 &&
         ehHorarioValido(x->horario.hora2, x->horario.min2) &&
         (x->horario.hora2 > x->horario.hora1 || (x->horario.hora2 == x->horario.hora1 && x->horario.min2 > x->horario.min1))) {
         entradaValida = 1;
     } else {
-        printf("HorÃ¡rio invÃ¡lido. Tente novamente. Certifique-se de que o horÃ¡rio de tÃ©rmino Ã© maior que o horÃ¡rio de inÃ­cio.\n");
+        printf("Horário inválido. Tente novamente. Certifique-se de que o horário de término é maior que o horário de início.\n");
         while (getchar() != '\n');
     }
 } while (!entradaValida);
 
 
-    printf("Digite a descriÃ§Ã£o:\n");
+    printf("Digite a descrição:\n");
     scanf(" %[^\n]", x->descricao);
     printf("Digite a sala do evento:\n");
     scanf(" %[^\n]", x->salaEvento);
@@ -137,7 +137,7 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
         }
 
         // Get user input for the chosen event
-        printf("Digite o nÃºmero do evento: ");
+        printf("Digite o número do evento: ");
         scanf("%d", &numEvento);
 
         // Validate the chosen event number
@@ -148,7 +148,7 @@ void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct eve
             printf("Ambiente/Recursos adicionado e associado ao evento com sucesso!\n");
             (*numAmbientes)++;
         } else {
-            printf("NÃºmero de evento invÃ¡lido! O ambiente foi adicionado, mas nÃ£o associado a nenhum evento.\n");
+            printf("Número de evento inválido! O ambiente foi adicionado, mas não associado a nenhum evento.\n");
             (*numAmbientes)++;
         }
     } else {
@@ -232,7 +232,7 @@ int main()
     	do{system("CLS");
         printf(RED "\nMENU ADM\n1)Adicionar ambientes e recursos\n2)Cadastro de um novo evento\n3)Mostrar todos os ambientes/recursos\n4)Mostrar ambientes e recursos especificos\n5)Mostrar eventos(data especifica)\n6)Mostrar eventos(por descricao)\n7)Remover evento(por data e hora de inicio)\n8)Sair\nDigite uma opcao:\n" RESET);
         scanf("%d", &opcao);
-        
+
 
         if (opcao == 1) {
             if (opcaoCadastroEvento) {
@@ -346,11 +346,11 @@ else if(opcao == 5){
 
 		}while(opcao != 8);
 
-	}else if(usuario == 2){
+}else if(usuario == 2){
 		do{
 		system("CLS");
 		x = realloc(x, sizeof(struct evento) * cont);
-		printf(RED "\nMENU PROFESSOR\n1)Cadastro de um novo evento\n2)Mostrar todos os ambientes/recursos\n3)Mostrar ambientes e recursos especificos\n4)Mostrar eventos(data especifica)\n5)Mostrar eventos(por descricao)\n6)Remover evento(por data e hora de inicio)\n7)Sair\nDigite uma opcao:\n" RESET);
+		printf(RED "\nMENU PROFESSOR\n1)Cadastro de um novo evento\n2)Mostrar to\n3)Mostrar eventos(data especifica)\n4)Mostrar eventos(por descricao)\n5)Remover evento(por data e hora de inicio)\n6)Sair\nDigite uma opcao:\n" RESET);
 		scanf("%d", &opcao);
 
 			if(opcao < 1 || opcao > 7){
@@ -369,16 +369,9 @@ else if(opcao == 5){
             mostrar_tudo(x, cont);
             system("PAUSE");
 
-        }else if(opcao == 3){
+        }
 
-            if(cont == 0){
-                printf("Nao ha eventos!\n");
-
-            }else{
-
-            }
-
-        }else if(opcao == 4){
+        else if(opcao == 3){
             if(cont == 0){
                 printf("Nao ha eventos!\n");
 
@@ -396,7 +389,7 @@ else if(opcao == 5){
             }
             system("PAUSE");
 
-        }else if(opcao == 5){
+        }else if(opcao == 4){
 
             if(cont == 0){
                 printf("Nao ha eventos!\n");
@@ -420,7 +413,7 @@ else if(opcao == 5){
                 }
                 system("PAUSE");
 
-        }else if(opcao == 6){
+        }else if(opcao == 5){
 
             if(cont == 0){
                 printf("Nao ha eventos!\n");
@@ -430,13 +423,13 @@ else if(opcao == 5){
 
 				system("PAUSE");
 
-		}else if(opcao == 7){
+		}else if(opcao == 6){
             	printf("Fim do programa!\n");
 			}
 
 
 
-	}while(opcao != 7);
+	}while(opcao != 6);
 	}
 
 
