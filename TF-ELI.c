@@ -14,9 +14,11 @@ struct Horario{
     int hora1, min1, hora2, min2;
 };
 
-struct evento{
+struct evento {
     struct Data data;
     struct Horario horario;
+    char nomeEvento[50];
+    char salaEvento[20];
     char descricao[20];
 };
 
@@ -35,6 +37,8 @@ int ehHorarioValido(int hora, int minuto) {
 
 void leitura(struct evento *x, int contador){
     int entradaValida = 0;
+     printf("Digite o nome do evento:\n");
+    scanf(" %[^\n]", x->nomeEvento);
 
     do {
         printf("Digite a data (dia, mes):\n");
@@ -77,13 +81,14 @@ do {
 
     printf("Digite a descrição:\n");
     scanf(" %[^\n]", x->descricao);
+    printf("Digite a sala do evento:\n");
+    scanf(" %[^\n]", x->salaEvento);
 }
-
 
 
 void mostrar_um(struct evento x){
     printf(RED "");
-    printf("Sala:\nData: %d/%d\nInicio: %d:%d\nFim: %d:%d\nDescricao: %s\n", x.data.dia, x.data.mes, x.horario.hora1, x.horario.min1, x.horario.hora2, x.horario.min2, x.descricao);
+    printf("Sala: %s\nData: %d/%d\nInicio: %d:%d\nFim: %d:%d\nDescricao: %s\n", x.salaEvento, x.data.dia, x.data.mes, x.horario.hora1, x.horario.min1, x.horario.hora2, x.horario.min2, x.descricao);
     printf(RESET);
 }
 
@@ -108,28 +113,44 @@ void mostrarAmbientes(struct ambiente *ambientes, int numAmbientes) {
         for (int i = 0; i < numAmbientes; i++) {
             printf("Ambiente %d:\n", i + 1);
             printf("Local: %s\n", ambientes[i].local);
-            printf("Evento associado:\n");
+
+
+            printf("Evento associado: %s\n", ambientes[i].x.nomeEvento);
             mostrar_um(ambientes[i].x);
+
+
             printf("\n");
         }
     }
 }
-
-void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes) {
+void adicionarAmbiente(struct ambiente *ambientes, int *numAmbientes, struct evento *eventos, int numEventos) {
     if (*numAmbientes < MAX_AMBIENTES) {
-        // Check if there is space for a new ambiente
         printf("Digite o local do ambiente/recursos:\n");
         scanf(" %[^\n]", ambientes[*numAmbientes].local);
+        int numEvento;
+        printf("Escolha o evento ao qual deseja associar ambientes e recursos:\n");
+        for (int i = 0; i < numEventos; i++) {
+            printf("Evento %d - Data: %d/%d\n", i + 1, eventos[i].data.dia, eventos[i].data.mes);
+        }
 
-        // You can add more details about the ambiente here if needed
-        // For example, you can prompt the user for additional information
 
-        printf("Ambiente/Recursos adicionado com sucesso!\n");
-        (*numAmbientes)++;
+        printf("Digite o número do evento: ");
+        scanf("%d", &numEvento);
+
+
+        if (numEvento >= 1 && numEvento <= numEventos) {
+            ambientes[*numAmbientes].x = eventos[numEvento - 1];
+            printf("Ambiente/Recursos adicionado e associado ao evento com sucesso!\n");
+            (*numAmbientes)++;
+        } else {
+            printf("Número de evento inválido! O ambiente foi adicionado, mas não associado a nenhum evento.\n");
+            (*numAmbientes)++;
+        }
     } else {
         printf("Limite de ambientes atingido!\n");
     }
 }
+
 
 int remover(struct evento *x, int contador){
 	int a, b, c, d, indice = -1;
@@ -169,31 +190,31 @@ int remover(struct evento *x, int contador){
 
 int main()
 {
-
-    setlocale(LC_ALL, "Portuguese_Brazil");
-
+    setlocale(LC_ALL,"Portuguese");
 	struct Ambiente *y = NULL;
 	struct evento *x = NULL;
     int opcao, usuario, cont = 0;
     struct ambiente ambientes[MAX_AMBIENTES];
     int numAmbientes = 0;
     int opcaoCadastroEvento = 0;
+    int voltar = 0;
 
+do{
 
-	x = malloc(sizeof(struct evento) * cont);
-    system("CLS");
-	printf(RED "\nMENU USUARIO\n1)Adm\n2)Professor\n3)Aluno\nDigite a opcao de usuario: \n" RESET);
+	system("CLS");
+	printf("MENU USUARIO\n" RESET);
+	printf(RED "1)Adm\n2)Professor\n3)Aluno\n4)Sair\nDigite a opcao de usuario: \n" RESET);
 	scanf("%d", &usuario);
-
 
 	if(usuario == 1){
     	do{system("CLS");
         printf(RED "\nMENU ADM\n1)Adicionar ambientes e recursos\n2)Cadastro de um novo evento\n3)Mostrar todos os ambientes/recursos\n4)Mostrar ambientes e recursos especificos\n5)Mostrar eventos(data especifica)\n6)Mostrar eventos(por descricao)\n7)Remover evento(por data e hora de inicio)\n8)Sair\nDigite uma opcao:\n" RESET);
         scanf("%d", &opcao);
 
+
         if (opcao == 1) {
             if (opcaoCadastroEvento) {
-                adicionarAmbiente(ambientes, &numAmbientes);
+                adicionarAmbiente(ambientes, &numAmbientes, x, cont);
                 system("PAUSE");
             } else {
                 printf("Por favor, realize o Cadastro de um novo evento primeiro (opcao 2).\n");
@@ -215,9 +236,36 @@ int main()
                 mostrarAmbientes(ambientes, numAmbientes);
             }
             system("PAUSE");
-        }else if(opcao == 4){
+        } else if (opcao == 4) {
+    if (numAmbientes == 0) {
+        printf("Nao ha ambientes ou recursos registrados. Por favor, utilize a opcao 1 para adicionar ambientes e recursos.\n");
+    } else {
+        
+        char nomeAmbiente[20];
+        printf("Digite o nome do ambiente/recursos que deseja consultar:\n");
+        scanf(" %[^\n]", nomeAmbiente);
 
-		}else if(opcao == 5){
+        int encontrados = 0;
+        for (int i = 0; i < numAmbientes; i++) {
+            if (strcmp(nomeAmbiente, ambientes[i].local) == 0) {
+                encontrados++;
+                printf("Detalhes do Ambiente/Recursos:\n");
+                printf("Local: %s\n", ambientes[i].local);
+                printf("Evento associado: %s\n", ambientes[i].x.nomeEvento);
+                mostrar_um(ambientes[i].x);
+
+                printf("\n");
+            }
+        }
+
+        if (encontrados == 0) {
+            printf("Ambiente/Recursos nao encontrado!\n");
+        }
+    }
+    system("PAUSE");
+}
+
+else if(opcao == 5){
 
 			if(cont == 0){
                 printf("Nao ha eventos!\n");
@@ -275,11 +323,11 @@ int main()
 
 		}while(opcao != 8);
 
-	}else if(usuario == 2){
+}else if(usuario == 2){
 		do{
 		system("CLS");
 		x = realloc(x, sizeof(struct evento) * cont);
-		printf(RED "\nMENU PROFESSOR\n1)Cadastro de um novo evento\n2)Mostrar todos os ambientes/recursos\n3)Mostrar ambientes e recursos especificos\n4)Mostrar eventos(data especifica)\n5)Mostrar eventos(por descricao)\n6)Remover evento(por data e hora de inicio)\n7)Sair\nDigite uma opcao:\n" RESET);
+		printf(RED "\nMENU PROFESSOR\n1)Cadastro de um novo evento\n2)Mostrar todos os ambientes/recursosn\n3)Mostrar eventos(data especifica)\n4)Mostrar eventos(por descricao)\n5)Remover evento(por data e hora de inicio)\n6)Sair\nDigite uma opcao:\n" RESET);
 		scanf("%d", &opcao);
 
 			if(opcao < 1 || opcao > 7){
@@ -298,16 +346,9 @@ int main()
             mostrar_tudo(x, cont);
             system("PAUSE");
 
-        }else if(opcao == 3){
+        }
 
-            if(cont == 0){
-                printf("Nao ha eventos!\n");
-
-            }else{
-
-            }
-
-        }else if(opcao == 4){
+        else if(opcao == 3){
             if(cont == 0){
                 printf("Nao ha eventos!\n");
 
@@ -325,7 +366,7 @@ int main()
             }
             system("PAUSE");
 
-        }else if(opcao == 5){
+        }else if(opcao == 4){
 
             if(cont == 0){
                 printf("Nao ha eventos!\n");
@@ -349,7 +390,7 @@ int main()
                 }
                 system("PAUSE");
 
-        }else if(opcao == 6){
+        }else if(opcao == 5){
 
             if(cont == 0){
                 printf("Nao ha eventos!\n");
@@ -359,13 +400,13 @@ int main()
 
 				system("PAUSE");
 
-		}else if(opcao == 7){
+		}else if(opcao == 6){
             	printf("Fim do programa!\n");
 			}
 
 
 
-	}while(opcao != 7);
+	}while(opcao != 6);
 	}
 
 
@@ -381,8 +422,40 @@ int main()
                 system("PAUSE");
 
 		}else if(opcao == 1){
-
+if (numAmbientes == 0) {
+                printf("Nao ha ambientes ou recursos registrados. Por favor, utilize a opcao 1 para adicionar ambientes e recursos.\n");
+            } else {
+                mostrarAmbientes(ambientes, numAmbientes);
+            }
+            system("PAUSE");
 		}else if(opcao == 2){
+             if (numAmbientes == 0) {
+        printf("Nao ha ambientes ou recursos registrados. Por favor, utilize a opcao 1 para adicionar ambientes e recursos.\n");
+    } else {
+        
+        char nomeAmbiente[20];
+        printf("Digite o nome do ambiente/recursos que deseja consultar:\n");
+        scanf(" %[^\n]", nomeAmbiente);
+
+        
+        int encontrados = 0;
+        for (int i = 0; i < numAmbientes; i++) {
+            if (strcmp(nomeAmbiente, ambientes[i].local) == 0) {
+                encontrados++;
+                printf("Detalhes do Ambiente/Recursos:\n");
+                printf("Local: %s\n", ambientes[i].local);
+                printf("Evento associado: %s\n", ambientes[i].x.nomeEvento);
+                mostrar_um(ambientes[i].x);
+
+                printf("\n");
+            }
+        }
+
+        if (encontrados == 0) {
+            printf("Ambiente/Recursos nao encontrado!\n");
+        }
+    }
+    system("PAUSE");
 
 		}else if(opcao == 3){
 
@@ -433,7 +506,10 @@ int main()
 
 	}while(opcao != 5);
 	}
-
+	else if(usuario == 4){
+		printf("Fim do programa!\n" RESET);
+	}
+}while(usuario != 4);
     free(x);
 
 	return 0;
