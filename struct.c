@@ -22,5 +22,5 @@ printf("valor do proximo ponteiro: %p\n", node->prox);
 
 free(node);
 
-return 0:
+return 0;
 }
