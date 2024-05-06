@@ -8,23 +8,23 @@ typedef struct {
 } Pessoa;
 
 typedef struct {
-    int max;
+    int tamanhoMaximo;
     int total;
-    Pessoa *item;
-} FilaStruct;
+    Pessoa *itens;
+} FilaEstrutura;
 
-typedef FilaStruct* Fila;
+typedef FilaEstrutura* Fila;
 
-Fila fila(int m) {
-    Fila F = malloc(sizeof(FilaStruct));
+Fila criarFila(int tamanhoMaximo) {
+    Fila F = malloc(sizeof(FilaEstrutura));
     if (F == NULL) {
         perror("Erro ao alocar memória para a fila.");
         exit(EXIT_FAILURE);
     }
-    F->max = m;
+    F->tamanhoMaximo = tamanhoMaximo;
     F->total = 0;
-    F->item = malloc(m * sizeof(Pessoa));
-    if (F->item == NULL) {
+    F->itens = malloc(tamanhoMaximo * sizeof(Pessoa));
+    if (F->itens == NULL) {
         perror("Erro ao alocar memória para os itens da fila.");
         free(F);
         exit(EXIT_FAILURE);
@@ -32,40 +32,40 @@ Fila fila(int m) {
     return F;
 }
 
-int vaziaf(Fila F) {
+int filaVazia(Fila F) {
     return (F->total == 0);
 }
 
-int cheia(Fila F) {
-    return (F->total == F->max);
+int filaCheia(Fila F) {
+    return (F->total == F->tamanhoMaximo);
 }
 
-void enfileira(char nome[], char cpf[], Fila F) {
-    if (cheia(F)) {
+void enfileirarPessoa(char nome[], char cpf[], Fila F) {
+    if (filaCheia(F)) {
         printf("A fila está cheia. Não é possível adicionar mais pessoas.\n");
     } else {
-        strcpy(F->item[F->total].nome, nome);
-        strcpy(F->item[F->total].cpf, cpf);
+        strcpy(F->itens[F->total].nome, nome);
+        strcpy(F->itens[F->total].cpf, cpf);
         F->total++;
     }
 }
 
-Pessoa desenfileira(Fila F) {
-    if (vaziaf(F)) {
+Pessoa desenfileirarPessoa(Fila F) {
+    if (filaVazia(F)) {
         perror("A fila está vazia.");
         exit(EXIT_FAILURE);
     }
-    Pessoa p = F->item[0];
+    Pessoa p = F->itens[0];
     for (int i = 1; i < F->total; i++) {
-        strcpy(F->item[i - 1].nome, F->item[i].nome);
-        strcpy(F->item[i - 1].cpf, F->item[i].cpf);
+        strcpy(F->itens[i - 1].nome, F->itens[i].nome);
+        strcpy(F->itens[i - 1].cpf, F->itens[i].cpf);
     }
     F->total--;
     return p;
 }
 
-Pessoa desenfileiraPorIndice(int indice, Fila F) {
-    if (vaziaf(F)) {
+Pessoa desenfileirarPessoaPorIndice(int indice, Fila F) {
+    if (filaVazia(F)) {
         perror("A fila está vazia.");
         exit(EXIT_FAILURE);
     }
@@ -73,47 +73,47 @@ Pessoa desenfileiraPorIndice(int indice, Fila F) {
         printf("Índice inválido. Escolha um índice válido.\n");
         exit(EXIT_FAILURE);
     }
-    Pessoa p = F->item[indice];
+    Pessoa p = F->itens[indice];
     for (int i = indice; i < F->total - 1; i++) {
-        strcpy(F->item[i].nome, F->item[i + 1].nome);
-        strcpy(F->item[i].cpf, F->item[i + 1].cpf);
+        strcpy(F->itens[i].nome, F->itens[i + 1].nome);
+        strcpy(F->itens[i].cpf, F->itens[i + 1].cpf);
     }
     F->total--;
     return p;
 }
 
-void destruirfila(Fila *G) {
-    free((*G)->item);
-    free(*G);
-    *G = NULL;
+void destruirFila(Fila *F) {
+    free((*F)->itens);
+    free(*F);
+    *F = NULL;
 }
 
 void mostrarFila(Fila F) {
-    if (vaziaf(F)) {
+    if (filaVazia(F)) {
         puts("A fila está vazia.");
         return;
     }
 
     printf("Pessoas na fila:\n");
     for (int i = 0; i < F->total; i++) {
-        printf("%d. Nome: %s, CPF: %s\n", i + 1, F->item[i].nome, F->item[i].cpf);
+        printf("%d. Nome: %s, CPF: %s\n", i + 1, F->itens[i].nome, F->itens[i].cpf);
     }
 }
 
 int main() {
-    int tamanho_fila;
+    int tamanhoMaximoFila;
     printf("Digite o tamanho máximo da fila: ");
-    scanf("%d", &tamanho_fila);
+    scanf("%d", &tamanhoMaximoFila);
 
-    Fila f = fila(tamanho_fila);
+    Fila filaPessoas = criarFila(tamanhoMaximoFila);
     char nome[50];
     char cpf[12];
     int opcao;
 
     while (1) {
         printf("\nMenu:\n");
-        printf("1. Inserir pessoa\n");
-        printf("2. Deletar pessoa por índice\n");
+       printf("1. Inserir pessoa\n");
+        printf("2. Deletar pessoa\n");
         printf("3. Visualizar fila\n");
         printf("4. Sair\n");
         printf("Escolha uma opção: ");
@@ -125,26 +125,26 @@ int main() {
                 scanf("%s", nome);
                 printf("CPF da pessoa: ");
                 scanf("%s", cpf);
-                enfileira(nome, cpf, f);
+                enfileirarPessoa(nome, cpf, filaPessoas);
                 break;
             case 2:
-                if (!vaziaf(f)) {
-                    mostrarFila(f);
+                if (!filaVazia(filaPessoas)) {
+                    mostrarFila(filaPessoas);
                     int indice;
                     printf("Digite o índice da pessoa que deseja remover: ");
                     scanf("%d", &indice);
-                    Pessoa removida = desenfileiraPorIndice(indice - 1, f);
-                    printf("Pessoa removida: Nome: %s, CPF: %s\n", removida.nome, removida.cpf);
+                    Pessoa pessoaRemovida = desenfileirarPessoaPorIndice(indice - 1, filaPessoas);
+                    printf("Pessoa removida: Nome: %s, CPF: %s\n", pessoaRemovida.nome, pessoaRemovida.cpf);
                 } else {
                     printf("A fila está vazia. Nenhuma pessoa para remover.\n");
                 }
                 break;
             case 3:
-                mostrarFila(f);
+                mostrarFila(filaPessoas);
                 break;
             case 4:
                 printf("Encerrando o programa.\n");
-                destruirfila(&f);
+                destruirFila(&filaPessoas);
                 return 0;
             default:
                 printf("Opção inválida. Por favor, escolha uma opção válida.\n");
