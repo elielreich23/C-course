@@ -169,6 +169,8 @@
 
 
     int main() {
+        /*create a condicao to specify the maximum number of 
+         staff and dependentes that can be registered*/
         Empresa empresa;
         inicializarEmpresa(&empresa);
         
