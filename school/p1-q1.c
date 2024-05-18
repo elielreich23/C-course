@@ -2,103 +2,162 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Definição de constantes para tamanhos máximos de strings
 #define MAX_NAME_LENGTH 250
 #define MAX_CPF_LENGTH 12
+#define MAX_RELATION_LENGTH 50
 
+// Estrutura para representar um dependente
 typedef struct {
     char nome[MAX_NAME_LENGTH];
     char cpf[MAX_CPF_LENGTH];
-    int relacao;  // 0: cônjuge, 1: filho(a)/enteado(a), 2: mãe, 3: pai
+    char relacao[MAX_RELATION_LENGTH];
 } Dependente;
 
+// Estrutura para representar um funcionário
 typedef struct {
     char nome[MAX_NAME_LENGTH];
     char cpf[MAX_CPF_LENGTH];
     int numero_dependentes;
     int ano_admissao;
-    int estado_civil;  // 0: solteiro, 1: casado/união estável, 2: divorciado, 3: viúvo
     Dependente* dependentes;
 } Funcionario;
 
+// Estrutura para representar uma empresa
 typedef struct {
     Funcionario* funcionarios;
     int num_funcionarios;
 } Empresa;
 
+// Função para inicializar a empresa
 void inicializarEmpresa(Empresa* empresa) {
     empresa->funcionarios = NULL;
     empresa->num_funcionarios = 0;
 }
 
+// Função para adicionar um funcionário à empresa
 void adicionarFuncionario(Empresa* empresa, Funcionario funcionario) {
     empresa->num_funcionarios++;
     empresa->funcionarios = realloc(empresa->funcionarios, empresa->num_funcionarios * sizeof(Funcionario));
     empresa->funcionarios[empresa->num_funcionarios - 1] = funcionario;
 }
 
+// Função para criar um novo funcionário
 Funcionario criarFuncionario() {
     Funcionario funcionario;
-
+    
     printf("Digite o nome do funcionário: ");
     fgets(funcionario.nome, MAX_NAME_LENGTH, stdin);
-    funcionario.nome[strcspn(funcionario.nome, "\n")] = '\0'; // Remove newline character
-
+    funcionario.nome[strcspn(funcionario.nome, "\n")] = '\0'; 
+    
     printf("Digite o CPF do funcionário: ");
     fgets(funcionario.cpf, MAX_CPF_LENGTH, stdin);
-    funcionario.cpf[strcspn(funcionario.cpf, "\n")] = '\0'; // Remove newline character
-
-    printf("Digite o ano de admissão: ");
-    scanf("%d", &funcionario.ano_admissao);
-
-    printf("Digite o estado civil (0: solteiro, 1: casado/união estável, 2: divorciado, 3: viúvo): ");
-    scanf("%d", &funcionario.estado_civil);
-
+    funcionario.cpf[strcspn(funcionario.cpf, "\n")] = '\0'; 
+    
+    // Validação do ano de admissão
+    do {
+        printf("Digite o ano de admissão (menor ou igual a 2024): ");
+        scanf("%d", &funcionario.ano_admissao);
+        while (getchar() != '\n'); 
+        if (funcionario.ano_admissao <= 1900 || funcionario.ano_admissao > 2024) {
+            printf("Ano inválido. Por favor, tente novamente.\n");
+        }
+    } while (funcionario.ano_admissao <= 1900 || funcionario.ano_admissao > 2024);
+    
     funcionario.numero_dependentes = 0;
     funcionario.dependentes = NULL;
-
-    // Limpar o buffer do teclado
-    getchar();
-
+    
     return funcionario;
 }
 
-void adicionarDependente(Funcionario* funcionario) {
-    Dependente dependente;
+// Função para adicionar um dependente a um funcionário da empresa
+void adicionarDependente(Empresa* empresa) {
+    if (empresa->num_funcionarios == 0) {
+        printf("Nenhum funcionário cadastrado.\n");
+        return;
+    }
 
-    printf("Digite o nome do dependente: ");
-    fgets(dependente.nome, MAX_NAME_LENGTH, stdin);
-    dependente.nome[strcspn(dependente.nome, "\n")] = '\0'; // Remove newline character
+    int indice, num_dependentes;
+    
+    printf("Digite o índice do funcionário (1 a %d): ", empresa->num_funcionarios);
+    scanf("%d", &indice);
+    
+    while (getchar() != '\n'); 
+    
+    if (indice < 1 || indice > empresa->num_funcionarios) {
+        printf("Índice inválido.\n");
+        return;
+    }
 
-    printf("Digite o CPF do dependente: ");
-    fgets(dependente.cpf, MAX_CPF_LENGTH, stdin);
-    dependente.cpf[strcspn(dependente.cpf, "\n")] = '\0'; // Remove newline character
+    Funcionario* funcionario = &empresa->funcionarios[indice - 1];
 
-    printf("Digite a relação (0: cônjuge, 1: filho(a)/enteado(a), 2: mãe, 3: pai): ");
-    scanf("%d", &dependente.relacao);
+    printf("Digite o número de dependentes que deseja registrar: ");
+    scanf("%d", &num_dependentes);
+    
+    while (getchar() != '\n'); 
 
-    // Limpar o buffer do teclado
-    getchar();
-
-    funcionario->numero_dependentes++;
-    funcionario->dependentes = realloc(funcionario->dependentes, funcionario->numero_dependentes * sizeof(Dependente));
-    funcionario->dependentes[funcionario->numero_dependentes - 1] = dependente;
+    for (int i = 0; i < num_dependentes; i++) {
+        Dependente dependente;
+        
+        printf("Digite o nome do dependente: ");
+        fgets(dependente.nome, MAX_NAME_LENGTH, stdin);
+        dependente.nome[strcspn(dependente.nome, "\n")] = '\0'; 
+        
+        printf("Digite o CPF do dependente: ");
+        fgets(dependente.cpf, MAX_CPF_LENGTH, stdin);
+        dependente.cpf[strcspn(dependente.cpf, "\n")] = '\0'; 
+        int relacao_opcao;
+        // Menu para selecionar a relação do dependente com o funcionário
+        do {
+            printf("Escolha a relação do dependente com o funcionário:\n");
+            printf("1. Cônjuge\n");
+            printf("2. Filho(a)/Enteado(a)\n");
+            printf("3. Mãe\n");
+            printf("4. Pai\n");
+            printf("Escolha uma opção (1-4): ");
+            scanf("%d", &relacao_opcao);
+            while (getchar() != '\n'); // Limpa o buffer de entrada
+            
+            switch (relacao_opcao) {
+                case 1:
+                    strcpy(dependente.relacao, "Cônjuge");
+                    break;
+                case 2:
+                    strcpy(dependente.relacao, "Filho(a)/Enteado(a)");
+                    break;
+                case 3:
+                    strcpy(dependente.relacao, "Mãe");
+                    break;
+                case 4:
+                    strcpy(dependente.relacao, "Pai");
+                    break;
+                default:
+                    printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+            }
+        } while (relacao_opcao < 1 || relacao_opcao > 4);
+        
+        funcionario->numero_dependentes++;
+        funcionario->dependentes = realloc(funcionario->dependentes, funcionario->numero_dependentes * sizeof(Dependente));
+        funcionario->dependentes[funcionario->numero_dependentes - 1] = dependente;
+    }
 }
 
+// Função para exibir as informações de um funcionário
 void exibirFuncionario(Funcionario funcionario) {
     printf("Nome: %s\n", funcionario.nome);
     printf("CPF: %s\n", funcionario.cpf);
     printf("Ano de Admissão: %d\n", funcionario.ano_admissao);
-    printf("Estado Civil: %d\n", funcionario.estado_civil);
     printf("Número de Dependentes: %d\n", funcionario.numero_dependentes);
-
+    
     for (int i = 0; i < funcionario.numero_dependentes; i++) {
         printf("  Dependente %d:\n", i + 1);
         printf("    Nome: %s\n", funcionario.dependentes[i].nome);
         printf("    CPF: %s\n", funcionario.dependentes[i].cpf);
-        printf("    Relação: %d\n", funcionario.dependentes[i].relacao);
+        printf("    Relação: %s\n", funcionario.dependentes[i].relacao);
     }
 }
 
+// Função para exibir as informações de todos os funcionários da empresa
 void exibirEmpresa(Empresa empresa) {
     printf("Número de Funcionários: %d\n", empresa.num_funcionarios);
     for (int i = 0; i < empresa.num_funcionarios; i++) {
@@ -108,10 +167,11 @@ void exibirEmpresa(Empresa empresa) {
     }
 }
 
+
 int main() {
     Empresa empresa;
     inicializarEmpresa(&empresa);
-
+    
     int opcao;
     do {
         printf("1. Adicionar Funcionário\n");
@@ -120,40 +180,24 @@ int main() {
         printf("4. Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
-
-        // Limpar o buffer do teclado
-        getchar();
-
+        
+        while (getchar() != '\n'); // Limpa o buffer de entrada
+        
         if (opcao == 1) {
             Funcionario novo_funcionario = criarFuncionario();
             adicionarFuncionario(&empresa, novo_funcionario);
         } else if (opcao == 2) {
-            if (empresa.num_funcionarios == 0) {
-                printf("Nenhum funcionário cadastrado.\n");
-            } else {
-                int indice;
-                printf("Digite o índice do funcionário (1 a %d): ", empresa.num_funcionarios);
-                scanf("%d", &indice);
-
-                // Limpar o buffer do teclado
-                getchar();
-
-                if (indice >= 1 && indice <= empresa.num_funcionarios) {
-                    adicionarDependente(&empresa.funcionarios[indice - 1]);
-                } else {
-                    printf("Índice inválido.\n");
-                }
-            }
+            adicionarDependente(&empresa);
         } else if (opcao == 3) {
             exibirEmpresa(empresa);
         }
     } while (opcao != 4);
-
+    
     // Liberar memória alocada
     for (int i = 0; i < empresa.num_funcionarios; i++) {
         free(empresa.funcionarios[i].dependentes);
     }
     free(empresa.funcionarios);
-
+    
     return 0;
 }
